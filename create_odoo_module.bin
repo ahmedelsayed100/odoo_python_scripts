@@ -1,0 +1,115 @@
+#!/usr/bin/env python3
+#====================================================
+# - A Python script to easy create an odoo module
+# Author :  {'name':"Ahmed Mokhtar",'position' : "Odoo developer" , 'email':"AhmedeMokhtar30@gmail.com"}
+# instructions and how to use #
+# first : chmod +x create_odoo_module.bin --> run this command in the same file dir to change the file permissions of create_odoo_module.bin to make it executable. 
+# second and finally :  ./create_odoo_module.bin module_name module_version  --> run this command to create the module   
+#====================================================
+import os
+import sys
+
+def create_odoo_module(module_name, module_version):
+    # Base folder
+    base_path = os.path.join(os.getcwd(), module_name)
+    os.makedirs(base_path, exist_ok=True)
+
+    # Folder structure
+    folders = [
+        "models",
+        "views",
+        "security",
+        "static/description",
+        "wizard",
+        "controller",
+        "data",
+    ]
+    for folder in folders:
+        os.makedirs(os.path.join(base_path, folder), exist_ok=True)
+    
+    # Files in models controller model
+    with open(os.path.join(base_path, "controller", "__init__.py"), "w") as file:
+         file.write("# -*- coding: utf-8 -*- \nfrom . import main")
+    with open(os.path.join(base_path, "controller", "main.py"), "w") as file:
+        file.write("# -*- coding: utf-8 -*-")
+
+
+    # Files in models folder
+    with open(os.path.join(base_path, "models", "__init__.py"), "w") as file:
+        file.write("# -*- coding: utf-8 -*- \nfrom . import model")
+    with open(os.path.join(base_path, "models", "model.py"), "w") as file:
+        file.write("# -*- coding: utf-8 -*-")
+
+    # Files in views folder
+    with open(os.path.join(base_path, "views", "view.xml"), "w") as file:
+        file.write("""<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!-- Views will go here -->
+    </data>
+</odoo>
+""")
+    # Files in data folder
+    with open(os.path.join(base_path, "data", "data.xml"), "w") as file:
+        file.write("""<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!-- Views will go here -->
+    </data>
+</odoo>
+""")
+
+    # Files in security folder
+    with open(os.path.join(base_path, "security", "ir.model.access.csv"), "w") as file:
+        file.write("id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink\n")
+    with open(os.path.join(base_path, "security", "security.xml"), "w") as file:
+        file.write("""<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!-- Security rules will go here -->
+    </data>
+</odoo>
+""")
+
+    # Main Python files
+    with open(os.path.join(base_path, "__init__.py"), "w") as file:
+        file.write("# -*- coding: utf-8 -*-\nfrom . import models\nfrom . import controller \nfrom . import wizard")
+    with open(os.path.join(base_path, "__manifest__.py"), "w") as file:
+        file.write("""# -*- coding: utf-8 -*-
+{{
+    'name': "{}",
+    "author": "",
+    'version': "{}.0.1.0.0",
+    'live_test_url': "",
+    'website':"",
+    "images": ['static/description/main_screenshot.png'],
+    'summary': "{}",
+    'description': "{}",
+    "license": "OPL-1",
+    'depends': ['base'],
+    'data': [
+    	# security
+    	'security/security.xml',
+    	'security/ir.model.access.csv',
+    	# data
+    	"data/data.xml",
+	# views
+        'views/view.xml',
+    ],
+    'installable': True,
+    'auto_install': False,
+    'application': False,
+    'category': "tools",
+}}
+""".format(module_name, module_version, module_name, module_name))
+
+    print("Module '{}' with version '{}' created successfully at {}".format(module_name, module_version, base_path))
+
+if __name__ == "__main__":
+    if len(sys.argv) != 3:
+        print("Usage: ./create_odoo_module.bin <module_name> <module_version>")
+        sys.exit(1)
+
+    module_name = sys.argv[1]
+    module_version = sys.argv[2]
+    create_odoo_module(module_name, module_version)
