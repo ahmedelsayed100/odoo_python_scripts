@@ -3,7 +3,7 @@
 # - A Python script to easy create an odoo module
 # Author :  {'name':"Ahmed Mokhtar",'position' : "Odoo developer" , 'email':"AhmedeMokhtar30@gmail.com"}
 # instructions and how to use #
-# first : chmod +x create_odoo_module.bin --> run this command in the same file dir to change the file permissions of create_odoo_module.bin to make it executable. 
+# first and for only once : chmod +x create_odoo_module.bin --> run this command in the same file dir to change the file permissions of create_odoo_module.bin to make it executable. 
 # second and finally :  ./create_odoo_module.bin module_name module_version  --> run this command to create the module   
 #====================================================
 import os
